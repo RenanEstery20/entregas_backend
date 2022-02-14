@@ -7,6 +7,10 @@ import { CreateDeliveryController } from './modules/deliveries/useCases/createDe
 import { ensureAuthenticateClient } from './middlewares/ensureAuthenticateClient'
 import { FindAllAvailableController } from './modules/deliveries/useCases/findAllAvailable/FindAllAvailableController'
 import { ensureAuthenticateDeliveryman } from './middlewares/ensureAuthenticateDeliveryman'
+import { UpdateDeliverymanController } from './modules/deliveries/useCases/updateDeliveryman/useCase/UpdateDeliverymanController'
+import { FindAllDeliveriesController } from './modules/clients/UseCases/deliveries/FindAllDeliveriesController'
+import { FindAllDeliveriesDeliverymanController } from './modules/deliveryman/useCases/findAllDeliveries/FindAllDeliveriesDeliverymanController'
+import { UpdateEndDateController } from './modules/deliveries/useCases/updateEndDate/UpdateEndDateController'
 
 const routes = Router()
 
@@ -17,6 +21,11 @@ const authenticateDeliverymanController =
   new AuthenticateDeliverymanController()
 const createDeliveryController = new CreateDeliveryController()
 const findAllAvailableController = new FindAllAvailableController()
+const updateDeliverymanController = new UpdateDeliverymanController()
+const findAllDeliveriesController = new FindAllDeliveriesController()
+const findAllDeliveriesDeliverymanController =
+  new FindAllDeliveriesDeliverymanController()
+const updateEndDateController = new UpdateEndDateController()
 
 routes.post('/client', createClientController.handle)
 routes.post('/client/authenticate', authenticateClientController.handle)
@@ -34,6 +43,30 @@ routes.get(
   '/delivery/available',
   ensureAuthenticateDeliveryman,
   findAllAvailableController.handle
+)
+
+routes.put(
+  '/delivery/updateDeliveryman/:id',
+  ensureAuthenticateDeliveryman,
+  updateDeliverymanController.handle
+)
+
+routes.get(
+  '/client/deliveries',
+  ensureAuthenticateClient,
+  findAllDeliveriesController.handle
+)
+
+routes.get(
+  '/deliveryman/deliveries',
+  ensureAuthenticateDeliveryman,
+  findAllDeliveriesDeliverymanController.handle
+)
+
+routes.put(
+  '/delivery/updateEndDate/:id',
+  ensureAuthenticateDeliveryman,
+  updateEndDateController.handle
 )
 
 export { routes }
